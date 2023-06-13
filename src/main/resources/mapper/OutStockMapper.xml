@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.warehouse.mapper.OutStockMapper">
+
+    <resultMap id="outStockResultMap" type="com.example.warehouse.entity.OutStock">
+        <id property="outStockId" column="out_stock_id"/>
+        <result property="outStockTime" column="out_stock_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="outStockStatus" column="out_stock_status"/>
+        <result property="outStockCategory" column="out_stock_category"/>
+        <collection property="outStockItems" ofType="com.example.warehouse.entity.OutStockItem">
+            <id property="outStockItemId" column="out_stock_item_id"/>
+            <result property="outStockId" column="out_stock_id"/>
+            <result property="productId" column="product_id"/>
+            <result property="outStockQuantity" column="out_stock_quantity"/>
+            <result property="outStockPrice" column="out_stock_price"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectDetailsById" resultMap="outStockResultMap">
+        SELECT *
+        FROM out_stock
+                 LEFT JOIN out_stock_item ON out_stock.out_stock_id = out_stock_item.out_stock_id
+        WHERE out_stock.out_stock_id = #{outStockId}
+    </select>
+
+    <select id="selectDetails" resultMap="outStockResultMap">
+        SELECT *
+        FROM out_stock
+                 LEFT JOIN out_stock_item ON out_stock.out_stock_id = out_stock_item.out_stock_id
+    </select>
+
+    <select id="getOutStockByCategory" resultMap="outStockResultMap">
+        SELECT *
+        FROM out_stock
+        WHERE out_stock.out_stock_category = #{outStockCategory}
+    </select>
+
+    <select id="getOutStockByCategoryAndStatus" resultMap="outStockResultMap">
+        SELECT *
+        FROM out_stock
+        WHERE out_stock.out_stock_category = #{outStockCategory} and out_stock.out_stock_status = #{outStockStatus}
+    </select>
+
+    <select id="getOutStockByStatus" resultMap="outStockResultMap">
+        SELECT *
+        FROM out_stock
+        WHERE out_stock.out_stock_status = #{outStockStatus}
+    </select>
+
+</mapper>

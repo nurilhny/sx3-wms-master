@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.warehouse.mapper.InStockItemMapper">
+
+    <resultMap id="inStockItemResultMap" type="com.example.warehouse.entity.InStockItem">
+
+        <id property="inStockItemId" column="in_stock_item_id"/>
+        <result property="inStockId" column="in_stock_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="inStockQuantity" column="in_stock_quantity"/>
+        <result property="inStockPrice" column="in_stock_price"/>
+
+    </resultMap>
+
+    <select id="getByInStockId" resultMap="inStockItemResultMap">
+        SELECT *
+        FROM in_stock_item
+        WHERE in_stock_item.in_stock_id = #{inStockId}
+    </select>
+
+
+</mapper>

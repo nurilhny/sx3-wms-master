@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.warehouse.mapper.ProductMapper">
+
+    <resultMap id="productDetailsMap" type="com.example.warehouse.entity.Product">
+        <id column="product_id" property="productId"/>
+        <result column="product_name" property="productName"/>
+        <result column="supplier_id" property="supplierId"/>
+        <association column="supplier_id" javaType="com.example.warehouse.entity.Supplier" property="supplier"
+                     select="com.example.warehouse.mapper.SupplierMapper.selectById"/>
+        <association column="product_id" javaType="com.example.warehouse.entity.Stock" property="stock"
+                     select="com.example.warehouse.mapper.StockMapper.selectById"/>
+    </resultMap>
+
+    <select id="selectDetailsById" parameterType="int" resultMap="productDetailsMap">
+        SELECT *
+        FROM product
+        WHERE product_id = #{productId}
+    </select>
+
+    <select id="selectDetails" resultMap="productDetailsMap">
+        SELECT *
+        FROM product
+    </select>
+
+    <select id="selectDetailsPage" parameterType="map" resultMap="productDetailsMap">
+        SELECT *
+        FROM product
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT count(*)
+        FROM product
+    </select>
+
+    <select id="getProductBySupplierId" parameterType="int" resultMap="productDetailsMap">
+        SELECT *
+        FROM product
+        WHERE supplier_id = #{supplierId}
+    </select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.warehouse.mapper.OrdersItemMapper">
+
+    <resultMap id="ordersItemResultMap" type="com.example.warehouse.entity.OrdersItem">
+
+        <id property="ordersItemId" column="orders_item_id"/>
+        <result property="ordersId" column="orders_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="quantity" column="quantity"/>
+        <result property="returnQuantity" column="return_quantity"/>
+        <result property="price" column="price"/>
+
+    </resultMap>
+
+    <select id="getOrdersItemByOrdersId" resultMap="ordersItemResultMap">
+        SELECT *
+        FROM orders_item
+        WHERE orders_item.orders_id = #{ordersId}
+    </select>
+</mapper>

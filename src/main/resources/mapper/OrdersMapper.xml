@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.warehouse.mapper.OrdersMapper">
+
+    <resultMap id="ordersResultMap" type="com.example.warehouse.entity.Orders">
+        <id property="ordersId" column="orders_id"/>
+        <result property="ordersTime" column="orders_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="ordersStatus" column="orders_status"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="paymentMethod" column="payment_method"/>
+        <result property="shippingAddress" column="shipping_address"/>
+        <collection property="ordersItems" ofType="com.example.warehouse.entity.OrdersItem">
+            <id property="ordersItemId" column="orders_item_id"/>
+            <result property="ordersId" column="orders_id"/>
+            <result property="productId" column="product_id"/>
+            <result property="quantity" column="quantity"/>
+            <result property="returnQuantity" column="return_quantity"/>
+            <result property="price" column="price"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectDetailsById" resultMap="ordersResultMap">
+        SELECT *
+        FROM orders
+                 LEFT JOIN orders_item ON orders.orders_id = orders_item.orders_id
+        WHERE orders.orders_id = #{ordersId}
+    </select>
+
+    <select id="selectDetails" resultMap="ordersResultMap">
+        SELECT *
+        FROM orders
+                 LEFT JOIN orders_item ON orders.orders_id = orders_item.orders_id
+    </select>
+
+    <select id="getOrdersByPaymentMethod" resultMap="ordersResultMap">
+        SELECT *
+        FROM orders
+        WHERE orders.payment_method = #{paymentMethod}
+    </select>
+
+    <select id="getOrdersByPaymentMethodAndStatus" resultMap="ordersResultMap">
+        SELECT *
+        FROM orders
+        WHERE orders.payment_method = #{paymentMethod} and orders.orders_status = #{ordersStatus}
+    </select>
+
+    <select id="getOrdersByStatus" resultMap="ordersResultMap">
+        SELECT *
+        FROM orders
+        WHERE orders.orders_status = #{ordersStatus}
+    </select>
+
+</mapper>

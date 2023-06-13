@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.warehouse.mapper.InStockMapper">
+
+    <resultMap id="inStockResultMap" type="com.example.warehouse.entity.InStock">
+        <id property="inStockId" column="in_stock_id"/>
+        <result property="inStockTime" column="in_stock_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="inStockStatus" column="in_stock_status"/>
+        <result property="inStockCategory" column="in_stock_category"/>
+        <collection property="inStockItems" ofType="com.example.warehouse.entity.InStockItem">
+            <id property="inStockItemId" column="in_stock_item_id"/>
+            <result property="inStockId" column="in_stock_id"/>
+            <result property="productId" column="product_id"/>
+            <result property="inStockQuantity" column="in_stock_quantity"/>
+            <result property="inStockPrice" column="in_stock_price"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectDetailsById" resultMap="inStockResultMap">
+        SELECT *
+        FROM in_stock
+                 LEFT JOIN in_stock_item ON in_stock.in_stock_id = in_stock_item.in_stock_id
+        WHERE in_stock.in_stock_id = #{inStockId}
+    </select>
+
+    <select id="selectDetails" resultMap="inStockResultMap">
+        SELECT *
+        FROM in_stock
+                 LEFT JOIN in_stock_item ON in_stock.in_stock_id = in_stock_item.in_stock_id
+    </select>
+
+    <select id="getInStockByCategory" resultMap="inStockResultMap">
+        SELECT *
+        FROM in_stock
+        WHERE in_stock.in_stock_category = #{inStockCategory}
+    </select>
+
+    <select id="getInStockByCategoryAndStatus" resultMap="inStockResultMap">
+        SELECT *
+        FROM in_stock
+        WHERE in_stock.in_stock_category = #{inStockCategory} and in_stock.in_stock_status = #{inStockStatus}
+    </select>
+
+    <select id="getInStockByStatus" resultMap="inStockResultMap">
+        SELECT *
+        FROM in_stock
+        WHERE in_stock.in_stock_status = #{inStockStatus}
+    </select>
+
+
+</mapper>
